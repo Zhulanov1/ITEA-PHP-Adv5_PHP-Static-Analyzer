@@ -15,17 +15,18 @@ Usage
 created by some developer in project.
 
 `$ ./bin/console class-info <full-class-name>` - this command shows class information in format
-Attention! Need to duplicate backslashes in <full-class-name> for example Greeflas\\StaticAnalyzer\\Test\\A
 
-`Class: {{class_name}} is {{class_type}}
-Properties:
-    public: {{count}}
-    protected: {{count}}
-    private: {{count}}
-Methods:
-    public: {{count}}
-    protected: {{count}}
-    private: {{count}}`
+Class: {{class_name}} is {{class_type}}  
+Properties:  
+&nbsp;&nbsp;&nbsp;&nbsp; public: {{count}}  
+&nbsp;&nbsp;&nbsp;&nbsp; protected: {{count}}  
+&nbsp;&nbsp;&nbsp;&nbsp; private: {{count}}  
+Methods:  
+&nbsp;&nbsp;&nbsp;&nbsp; public: {{count}}  
+&nbsp;&nbsp;&nbsp;&nbsp; protected: {{count}}  
+&nbsp;&nbsp;&nbsp;&nbsp; private: {{count}}
+
+Attention! Need to duplicate backslashes in `<full-class-name>` for example `Greeflas\\StaticAnalyzer\\Test\\A`
 
 Code style fixer
 ----------------
