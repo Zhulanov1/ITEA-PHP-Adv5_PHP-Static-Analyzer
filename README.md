@@ -14,7 +14,18 @@ Usage
 `$ ./bin/console stat:class-author <email> <project-src>` - counts classes/interfaces/trait
 created by some developer in project.
 
-`$ ./bin/console class-info <full-class-name>` - this command shows class information
+`$ ./bin/console class-info <full-class-name>` - this command shows class information in format
+Attention! Need to duplicate backslashes in <full-class-name> for example Greeflas\\StaticAnalyzer\\Test\\A
+
+`Class: {{class_name}} is {{class_type}}
+Properties:
+    public: {{count}}
+    protected: {{count}}
+    private: {{count}}
+Methods:
+    public: {{count}}
+    protected: {{count}}
+    private: {{count}}`
 
 Code style fixer
 ----------------

@@ -17,12 +17,16 @@
     "phpdocumentor/reflection-docblock": "^4.3"
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.5",
     "friendsofphp/php-cs-fixer": "^2.14"
   },
   "autoload": {
     "psr-4": {
       "Greeflas\\StaticAnalyzer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Greeflas\\StaticAnalyzer\\Test\\": "test/"
     }
   },
   "scripts": {
