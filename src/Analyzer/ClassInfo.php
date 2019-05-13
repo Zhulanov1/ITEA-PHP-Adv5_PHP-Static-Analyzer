@@ -52,7 +52,7 @@ final class ClassInfo
         try {
             $reflector = new \ReflectionClass($this->fullClassName);
         } catch (\ReflectionException $e) {
-            die(\sprintf('Class %s not found, check your input' . \PHP_EOL, $this->fullClassName));
+            throw new \InvalidArgumentException(\sprintf('Class %s not found, check your input', $this->fullClassName));
         }
 
         return new ClassInfoStorage(
