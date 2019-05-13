@@ -26,7 +26,7 @@ Methods:
 &nbsp;&nbsp;&nbsp;&nbsp; protected: {{count}}  
 &nbsp;&nbsp;&nbsp;&nbsp; private: {{count}}
 
-Attention! Need to duplicate backslashes in `<full-class-name>` for example `Greeflas\\StaticAnalyzer\\Test\\A`
+> Attention! Need to duplicate backslashes in `<full-class-name>` for example `Greeflas\\StaticAnalyzer\\Test\\A`
 
 Code style fixer
 ----------------

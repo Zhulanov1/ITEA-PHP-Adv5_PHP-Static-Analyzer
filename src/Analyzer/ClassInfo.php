@@ -11,8 +11,10 @@
 
 namespace Greeflas\StaticAnalyzer\Analyzer;
 
+use Greeflas\StaticAnalyzer\Model\ClassInfoStorage;
+
 /**
- * This command shows class information in format:
+ * Analyzer collects information about the class and returns it in the format:
  * Class: {{class_name}} is {{class_type}}
  * Properties:
  *     public: {{count}}
@@ -27,13 +29,14 @@ namespace Greeflas\StaticAnalyzer\Analyzer;
  */
 final class ClassInfo
 {
+    const FINAL_CLASS_TYPE = 'final';
+
+    const ABSTRACT_CLASS_TYPE = 'abstract';
+
+    const NORMAL_CLASS_TYPE = 'normal';
+
     private $fullClassName;
 
-    /**
-     * ClassInfo constructor.
-     *
-     * @param string $fullClassName
-     */
     public function __construct(string $fullClassName)
     {
         $this->fullClassName = $fullClassName;
@@ -42,20 +45,22 @@ final class ClassInfo
     /**
      * @throws \ReflectionException
      *
-     * @return array
+     * @return ClassInfoStorage
      */
-    public function analyze()
+    public function analyze(): ClassInfoStorage
     {
-        $reflector = new \ReflectionClass($this->fullClassName);
+        try {
+            $reflector = new \ReflectionClass($this->fullClassName);
+        } catch (\ReflectionException $e) {
+            die(\sprintf('Class %s not found, check your input' . \PHP_EOL, $this->fullClassName));
+        }
 
-        $result = [];
-
-        $result['class_name'] = $reflector->getShortName();
-        $result['class_type'] = $this->getClassType($reflector);
-        $result['properties'] = $this->getQtyProperties($reflector);
-        $result['methods'] = $this->getQtyMethods($reflector);
-
-        return $result;
+        return new ClassInfoStorage(
+            $reflector->getShortName(),
+            $this->getClassType($reflector),
+            $this->getQtyProperties($reflector),
+            $this->getQtyMethods($reflector)
+        );
     }
 
     /**
@@ -66,14 +71,14 @@ final class ClassInfo
     private function getClassType(\ReflectionClass $reflector): string
     {
         if ($reflector->isFinal()) {
-            return 'final';
+            return self::FINAL_CLASS_TYPE;
         }
 
         if ($reflector->isAbstract()) {
-            return 'abstract';
+            return self::ABSTRACT_CLASS_TYPE;
         }
 
-        return 'normal';
+        return self::NORMAL_CLASS_TYPE;
     }
 
 
@@ -84,13 +89,9 @@ final class ClassInfo
      */
     private function getQtyMethods(\ReflectionClass $reflector): array
     {
-        $result = [];
-
-        $result['public'] = \count($reflector->getMethods(\ReflectionMethod::IS_PUBLIC));
-        $result['protected'] = \count($reflector->getMethods(\ReflectionMethod::IS_PROTECTED));
-        $result['private'] = \count($reflector->getMethods(\ReflectionMethod::IS_PRIVATE));
-
-        return $result;
+        return ['public' => \count($reflector->getMethods(\ReflectionMethod::IS_PUBLIC)),
+                'protected' => \count($reflector->getMethods(\ReflectionMethod::IS_PROTECTED)),
+                'private' => \count($reflector->getMethods(\ReflectionMethod::IS_PRIVATE)), ];
     }
 
     /**
@@ -100,12 +101,8 @@ final class ClassInfo
      */
     private function getQtyProperties(\ReflectionClass $reflector): array
     {
-        $result = [];
-
-        $result['public'] = \count($reflector->getProperties(\ReflectionProperty::IS_PUBLIC));
-        $result['protected'] = \count($reflector->getProperties(\ReflectionProperty::IS_PROTECTED));
-        $result['private'] = \count($reflector->getProperties(\ReflectionProperty::IS_PRIVATE));
-
-        return $result;
+        return ['public' => \count($reflector->getProperties(\ReflectionProperty::IS_PUBLIC)),
+                'protected' => \count($reflector->getProperties(\ReflectionProperty::IS_PROTECTED)),
+                'private' => \count($reflector->getProperties(\ReflectionProperty::IS_PRIVATE)), ];
     }
 }

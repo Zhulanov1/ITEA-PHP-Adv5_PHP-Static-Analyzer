@@ -15,9 +15,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Greeflas\StaticAnalyzer\Analyzer\ClassInfo as ClassInfoAnalyzer;
+use Greeflas\StaticAnalyzer\Analyzer\ClassInfo;
 
-class ClassInfo extends Command
+class ClassInfoCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -42,9 +42,9 @@ class ClassInfo extends Command
     {
         $fullClassName = $input->getArgument('full class name');
 
-        $analyzer = new ClassInfoAnalyzer($fullClassName);
+        $analyzer = new ClassInfo($fullClassName);
 
-        $result = $analyzer->analyze();
+        $classInfo = $analyzer->analyze();
 
         $output->writeln(\sprintf(
             'Class: %s is %s' . \PHP_EOL
@@ -56,14 +56,14 @@ class ClassInfo extends Command
                  . '    public: %s' . \PHP_EOL
                  . '    protected: %s' . \PHP_EOL
                  . '    private: %s',
-            $result['class_name'],
-            $result['class_type'],
-            $result['properties']['public'],
-            $result['properties']['protected'],
-            $result['properties']['private'],
-            $result['methods']['public'],
-            $result['methods']['protected'],
-            $result['methods']['private']
+            $classInfo->className,
+            $classInfo->classType,
+            $classInfo->properties['public'],
+            $classInfo->properties['protected'],
+            $classInfo->properties['private'],
+            $classInfo->methods['public'],
+            $classInfo->methods['protected'],
+            $classInfo->methods['private']
         ));
     }
 }
