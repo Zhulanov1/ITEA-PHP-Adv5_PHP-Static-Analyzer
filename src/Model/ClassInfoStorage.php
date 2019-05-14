@@ -17,14 +17,11 @@ namespace Greeflas\StaticAnalyzer\Model;
 final class ClassInfoStorage
 {
     public $className;
-
     public $classType;
-
     public $properties;
-
     public $methods;
 
-    public function __construct(string $className, string $classType, array $properties, array $methods)
+    public function __construct(string $className, string $classType, QtyClassMembersStorage $properties, QtyClassMembersStorage $methods)
     {
         $this->className = $className;
         $this->classType = $classType;

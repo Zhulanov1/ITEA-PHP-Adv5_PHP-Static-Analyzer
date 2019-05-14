@@ -58,12 +58,12 @@ class ClassInfoCommand extends Command
                  . '    private: %s',
             $classInfo->className,
             $classInfo->classType,
-            $classInfo->properties['public'],
-            $classInfo->properties['protected'],
-            $classInfo->properties['private'],
-            $classInfo->methods['public'],
-            $classInfo->methods['protected'],
-            $classInfo->methods['private']
+            $classInfo->properties->public,
+            $classInfo->properties->protected,
+            $classInfo->properties->private,
+            $classInfo->methods->public,
+            $classInfo->methods->protected,
+            $classInfo->methods->private
         ));
     }
 }

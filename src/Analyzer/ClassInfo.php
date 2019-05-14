@@ -12,28 +12,17 @@
 namespace Greeflas\StaticAnalyzer\Analyzer;
 
 use Greeflas\StaticAnalyzer\Model\ClassInfoStorage;
+use Greeflas\StaticAnalyzer\Model\QtyClassMembersStorage;
 
 /**
- * Analyzer collects information about the class and returns it in the format:
- * Class: {{class_name}} is {{class_type}}
- * Properties:
- *     public: {{count}}
- *     protected: {{count}}
- *     private: {{count}}
- * Methods:
- *     public: {{count}}
- *     protected: {{count}}
- *     private: {{count}}
- *
+ * Analyzer collects information about the class
  * @author Konstantin Zhulanov <zhulanov111@gmail.com>
  */
 final class ClassInfo
 {
-    const FINAL_CLASS_TYPE = 'final';
-
-    const ABSTRACT_CLASS_TYPE = 'abstract';
-
-    const NORMAL_CLASS_TYPE = 'normal';
+    const CLASS_TYPE_FINAL = 'final';
+    const CLASS_TYPE_ABSTRACT = 'abstract';
+    const CLASS_TYPE_NORMAL = 'normal';
 
     private $fullClassName;
 
@@ -71,38 +60,42 @@ final class ClassInfo
     private function getClassType(\ReflectionClass $reflector): string
     {
         if ($reflector->isFinal()) {
-            return self::FINAL_CLASS_TYPE;
+            return self::CLASS_TYPE_FINAL;
         }
 
         if ($reflector->isAbstract()) {
-            return self::ABSTRACT_CLASS_TYPE;
+            return self::CLASS_TYPE_ABSTRACT;
         }
 
-        return self::NORMAL_CLASS_TYPE;
+        return self::CLASS_TYPE_NORMAL;
     }
 
 
     /**
      * @param \ReflectionClass $reflector
      *
-     * @return array
+     * @return QtyClassMembersStorage
      */
-    private function getQtyMethods(\ReflectionClass $reflector): array
+    private function getQtyMethods(\ReflectionClass $reflector): QtyClassMembersStorage
     {
-        return ['public' => \count($reflector->getMethods(\ReflectionMethod::IS_PUBLIC)),
-                'protected' => \count($reflector->getMethods(\ReflectionMethod::IS_PROTECTED)),
-                'private' => \count($reflector->getMethods(\ReflectionMethod::IS_PRIVATE)), ];
+        return new QtyClassMembersStorage(
+            \count($reflector->getMethods(\ReflectionMethod::IS_PUBLIC)),
+            \count($reflector->getMethods(\ReflectionMethod::IS_PROTECTED)),
+            \count($reflector->getMethods(\ReflectionMethod::IS_PRIVATE))
+        );
     }
 
     /**
      * @param \ReflectionClass $reflector
      *
-     * @return array
+     * @return QtyClassMembersStorage
      */
-    private function getQtyProperties(\ReflectionClass $reflector): array
+    private function getQtyProperties(\ReflectionClass $reflector): QtyClassMembersStorage
     {
-        return ['public' => \count($reflector->getProperties(\ReflectionProperty::IS_PUBLIC)),
-                'protected' => \count($reflector->getProperties(\ReflectionProperty::IS_PROTECTED)),
-                'private' => \count($reflector->getProperties(\ReflectionProperty::IS_PRIVATE)), ];
+        return new QtyClassMembersStorage(
+            \count($reflector->getProperties(\ReflectionProperty::IS_PUBLIC)),
+            \count($reflector->getProperties(\ReflectionProperty::IS_PROTECTED)),
+            \count($reflector->getProperties(\ReflectionProperty::IS_PRIVATE))
+        );
     }
 }
